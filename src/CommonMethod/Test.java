@@ -21,5 +21,8 @@ public class Test {
         map.put(new PhoneNumber(707, 867, 1234), "jenny");
         String value = map.get(new PhoneNumber(707, 867, 1234));
         System.out.println(value); // value is "jenny"
+
+        System.out.println(p1.toString());
+        System.out.println(p4.toString());
     }
 }

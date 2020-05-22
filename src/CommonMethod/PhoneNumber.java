@@ -33,4 +33,9 @@ public class PhoneNumber {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return this.areaCode + "-" + this.prefix + "-" + this.lineNum;
+    }
 }
