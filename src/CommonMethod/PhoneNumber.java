@@ -1,6 +1,6 @@
 package CommonMethod;
 
-public class PhoneNumber {
+public class PhoneNumber implements Cloneable {
     private final int areaCode;
     private final int prefix;
     private final int lineNum;
@@ -37,5 +37,14 @@ public class PhoneNumber {
     @Override
     public String toString() {
         return String.format("%3d-%3d-%4d", areaCode, prefix, lineNum);
+    }
+
+    // 재정의한 메서드의 반환 타입은 상위 클래스의 메서드가 반환하는 타입(Object)의 하위 타입(PhoneNumber)일 수 있다.
+    @Override public PhoneNumber clone() throws CloneNotSupportedException {
+        try {
+            return (PhoneNumber) super.clone();
+        } catch(CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
