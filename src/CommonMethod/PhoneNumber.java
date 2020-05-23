@@ -36,6 +36,6 @@ public class PhoneNumber {
 
     @Override
     public String toString() {
-        return this.areaCode + "-" + this.prefix + "-" + this.lineNum;
+        return String.format("%3d-%3d-%4d", areaCode, prefix, lineNum);
     }
 }
