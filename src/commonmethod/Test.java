@@ -50,5 +50,12 @@ public class Test {
         System.out.println(n1.equals(n2));
         System.out.println(n1.hashCode());
         System.out.println(n2.hashCode());
+
+        System.out.println("Comparable Test...");
+        System.out.println(p1.compareTo(p2)); // 0
+        System.out.println(p1.compareTo(p3)); // 0
+        System.out.println(p2.compareTo(p3)); // 0
+
+        System.out.println(p1.compareTo(p4)); // 양수
     }
 }

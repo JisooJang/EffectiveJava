@@ -1,10 +1,18 @@
 package commonmethod;
 
+import java.util.Comparator;
+
+import static java.util.Comparator.comparingInt;
+
 public class PhoneNumber implements Cloneable, Comparable<PhoneNumber> {
     private final int areaCode;
     private final int prefix;
     private final int lineNum;
     private int hashcode = 0;
+    private static final Comparator<PhoneNumber> COMPARATOR =
+            comparingInt((PhoneNumber p) -> p.areaCode)
+            .thenComparingInt(p -> p.prefix)
+            .thenComparingInt(p -> p.lineNum);
 
     public PhoneNumber(int areaCode, int prefix, int lineNum) {
         this.areaCode = areaCode;
@@ -50,14 +58,19 @@ public class PhoneNumber implements Cloneable, Comparable<PhoneNumber> {
 
     // Comparable<T> 인터페이스의 구현 메소드.
     // 본 객체가 인자 객체보다 작으면 음수, 같으면 0, 크면 양수를 return한다.
+//    @Override public int compareTo(PhoneNumber p) {
+//        int result = Integer.compare(this.areaCode, p.areaCode);
+//        if(result == 0) {
+//            result = Integer.compare(this.prefix, p.prefix);
+//            if(result == 0) {
+//                result = Integer.compare(this.lineNum, p.lineNum);
+//            }
+//        }
+//        return result;
+//    }
+
+    // Comparable version 2. 자바 8에서는 비교자 생성 메서드와 팀을 꾸려 메서드 연쇄방식으로 비교자(Comparator) 생성가능.
     @Override public int compareTo(PhoneNumber p) {
-        int result = Integer.compare(this.areaCode, p.areaCode);
-        if(result == 0) {
-            result = Integer.compare(this.prefix, p.prefix);
-            if(result == 0) {
-                result = Integer.compare(this.lineNum, p.lineNum);
-            }
-        }
-        return result;
+        return COMPARATOR.compare(this, p);
     }
 }
