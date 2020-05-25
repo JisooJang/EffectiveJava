@@ -1,4 +1,4 @@
-package FreeReference;
+package freeReference;
 
 import java.util.Arrays;
 import java.util.EmptyStackException;

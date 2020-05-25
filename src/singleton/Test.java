@@ -1,6 +1,4 @@
-package Singleton;
-
-import java.lang.reflect.AccessibleObject;
+package singleton;
 
 public class Test {
     public static void main(String[] args) {

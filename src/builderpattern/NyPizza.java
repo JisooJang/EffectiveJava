@@ -1,4 +1,4 @@
-package BuilderPattern;
+package builderpattern;
 
 import java.util.Objects;
 

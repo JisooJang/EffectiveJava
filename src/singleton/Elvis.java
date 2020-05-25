@@ -1,4 +1,4 @@
-package Singleton;
+package singleton;
 
 public class Elvis {
     public static final Elvis INSTANCE = new Elvis();

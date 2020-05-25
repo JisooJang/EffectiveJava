@@ -1,4 +1,4 @@
-package CommonMethod;
+package commonmethod;
 
 import java.util.HashMap;
 import java.util.Map;

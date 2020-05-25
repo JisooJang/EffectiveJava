@@ -1,4 +1,4 @@
-package BuilderPattern;
+package builderpattern;
 
 public class Calzone extends Pizza {
     private final boolean sauceInside;
