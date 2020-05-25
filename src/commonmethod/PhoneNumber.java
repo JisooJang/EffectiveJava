@@ -1,6 +1,6 @@
-package CommonMethod;
+package commonmethod;
 
-public class PhoneNumber implements Cloneable {
+public class PhoneNumber implements Cloneable, Comparable<PhoneNumber> {
     private final int areaCode;
     private final int prefix;
     private final int lineNum;
@@ -46,5 +46,18 @@ public class PhoneNumber implements Cloneable {
         } catch(CloneNotSupportedException e) {
             throw new AssertionError();
         }
+    }
+
+    // Comparable<T> 인터페이스의 구현 메소드.
+    // 본 객체가 인자 객체보다 작으면 음수, 같으면 0, 크면 양수를 return한다.
+    @Override public int compareTo(PhoneNumber p) {
+        int result = Integer.compare(this.areaCode, p.areaCode);
+        if(result == 0) {
+            result = Integer.compare(this.prefix, p.prefix);
+            if(result == 0) {
+                result = Integer.compare(this.lineNum, p.lineNum);
+            }
+        }
+        return result;
     }
 }
