@@ -6,7 +6,10 @@ import java.util.concurrent.*;
 import java.util.concurrent.Flow.Publisher;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
-
+/*
+https://youtu.be/8fenTR3KOJo
+토비의 봄 TV 5회 스프링 리액티브 프로그래밍 (1) - Reactive Streams 강의 내용 실습
+ */
 public class PubSub {
     public static void main(String[] args) throws InterruptedException {
         Iterable<Integer> iter = Arrays.asList(1, 2, 3, 4, 5);
