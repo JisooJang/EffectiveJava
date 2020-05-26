@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.Flow.Publisher;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,34 +21,57 @@ public class PubSubOperator {
         List<Integer> iter = Stream.iterate(1, i -> i+1).limit(10).collect(Collectors.toList());
         Publisher<Integer> pub = iterPub(iter);
         Publisher<Integer> mapPub = mapPub(pub, i -> i * 10); // 중개 1
-        Publisher<Integer> map2Pub = mapPub(mapPub, i -> -i); // 중개 2 (chaining)
-        map2Pub.subscribe(logSub());
+        Publisher<Integer> sumPub = sumPub(pub);
+        Publisher<Integer> reducePub = reducePub(pub, 0, (a,b) -> a+b);
+        reducePub.subscribe(logSub());
     }
-
 
     // 중개자 Publisher (데이터 변환). Function<Argument, ReturnType>
     private static Publisher<Integer> mapPub(Publisher<Integer> pub, Function<Integer, Integer> f) {
         return new Publisher<Integer>() {
             @Override
             public void subscribe(Subscriber<? super Integer> subscriber) {
-                pub.subscribe(new Subscriber<Integer>() {
+                pub.subscribe(new DelegateSub(subscriber) {
                     @Override
-                    public void onSubscribe(Subscription subscription) {
-                        subscriber.onSubscribe(subscription);
+                    public void onNext(Integer i) {
+                        sub.onNext(f.apply(i));
+                    }
+                });
+            }
+        };
+    }
+
+    private static Publisher<Integer> sumPub(Publisher<Integer> pub) {
+        return new Publisher<Integer>() {
+            @Override
+            public void subscribe(Subscriber<? super Integer> subscriber) {
+                pub.subscribe(new DelegateSub(subscriber) {
+                    int sum = 0;
+                    @Override public void onNext(Integer i) {
+                        sum += i;
                     }
 
-                    @Override
-                    public void onNext(Integer item) {
-                        subscriber.onNext(f.apply(item));
+                    @Override public void onComplete() {
+                        sub.onNext(sum);
+                        sub.onComplete();
+                    }
+                });
+            }
+        };
+    }
+
+    private static Publisher<Integer> reducePub(Publisher<Integer> pub, int start, BiFunction<Integer, Integer, Integer> f) {
+        return new Publisher<Integer>() {
+            @Override
+            public void subscribe(Subscriber<? super Integer> subscriber) {
+                pub.subscribe(new DelegateSub(subscriber) {
+                    int result = start;
+                    @Override public void onNext(Integer i) {
+                        result = f.apply(result, i);
                     }
 
-                    @Override
-                    public void onError(Throwable throwable) {
-                        subscriber.onError(throwable);
-                    }
-
-                    @Override
-                    public void onComplete() {
+                    @Override public void onComplete() {
+                        subscriber.onNext(result);
                         subscriber.onComplete();
                     }
                 });
