@@ -15,7 +15,14 @@ public class Test {
         s2.addAll(List.of("b", "bb,", "bbb"));
         System.out.println(s2.getCount()); // 컴포지션 클래스인 InstrumentedSet을 이용하여 기대한 갑인 3을 리턴한다.
 
+        System.out.println("======================");
+
         Set<Integer> s3 = new InstrumentedSet<>(new TreeSet<>());
         Set<Integer> s4 = new InstrumentedSet<>(new HashSet<>(10));
+
+        Sub sub = new Sub();
+
+        System.out.println("======================");
+        sub.overrideMe();
     }
 }
