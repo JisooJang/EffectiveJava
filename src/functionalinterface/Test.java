@@ -2,11 +2,9 @@ package functionalinterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
+import java.util.function.*;
 
 public class Test {
     public static void main(String[] args) {
@@ -46,6 +44,44 @@ public class Test {
 
         map.forEach((k,v) -> System.out.println(k + ":" + v));
 
+        Supplier<Integer> random = () -> (int)(Math.random() * 100) + 1;
+        Consumer<Integer> c = i -> System.out.print(i + ", ");
+        Predicate<Integer> p = i -> i % 2 == 0;
+        Function<Integer, Integer> f = i -> i / 10 * 10; // 1의 자리를 없앤다.
+
+        List<Integer> ranList = new ArrayList<>();
+        makeRandomList(random, ranList);
+        System.out.println(ranList);
+
+        printEvenNum(p, c, ranList);
+
+        List<Integer> newList = doSomething(f, ranList);
+        System.out.println(newList);
+
+    }
+
+    static <T> List<T> doSomething(Function<T, T> f, List<T> list) {
+        List<T> newList = new ArrayList<>(list.size());
+        for(T t : list) {
+            newList.add(f.apply(t));
+        }
+        return newList;
+    }
+
+    static <T> void printEvenNum(Predicate<T> p, Consumer<T> c, List<T> list) {
+        System.out.print("[");
+        for(T t : list) {
+            if(p.test(t)) {
+                c.accept(t);
+            }
+        }
+        System.out.println("]");
+    }
+
+    static <T> void makeRandomList(Supplier<T> s, List<T> list) {
+        for(int i=0 ; i<10 ; i++) {
+            list.add(s.get());
+        }
     }
 }
 
