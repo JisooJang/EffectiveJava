@@ -58,6 +58,34 @@ public class Test {
         List<Integer> newList = doSomething(f, ranList);
         System.out.println(newList);
 
+        Function<String, Integer> f2 = (str) -> Integer.parseInt(str, 16);
+        Function<Integer, String> g = (i) -> Integer.toBinaryString(i);
+
+        // Function 두 람다식의 합성
+        Function<String, String> h = f2.andThen(g); // f를 먼저 적용하고 그다음 g 적용
+        Function<Integer, Integer> h2 = f2.compose(g); // g를 먼저 적용하고 그다음 f 적용
+
+        System.out.println(h.apply("FF"));  //"FF" -> 255 -> "11111111"
+        System.out.println(h2.apply(2)); // 2 -> "10" -> 16
+
+        Function<String, String> f3 = x -> x; // 항등 함수 (identity function)
+        System.out.println(f3.apply("abc")); // "abc"가 그대로 출력
+
+        Predicate<Integer> p1 = i -> i < 100;
+        Predicate<Integer> q1 = i -> i < 200;
+        Predicate<Integer> r = i -> i%2 == 0;
+        Predicate<Integer> notP = p1.negate(); //i >= 100
+
+        Predicate<Integer> all = notP.and(q1.or(r));
+        System.out.println(all.test(150));
+
+        String str1 = "abc";
+        String str2 = "abc";
+
+        Predicate<String> predicate = Predicate.isEqual(str1);
+        System.out.println(predicate.test(str2));
+
+
     }
 
     static <T> List<T> doSomething(Function<T, T> f, List<T> list) {
