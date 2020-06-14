@@ -29,10 +29,10 @@ public class Employee2 {
     public boolean equals(Object obj) {
         if(this == obj) { // 객체 주소값이 같으면 자기자신임
             return true;
-        } else if(!(obj instanceof Employee)) {
+        } else if(!(obj instanceof Employee2)) {
             return false;
         }
-        Employee emp = (Employee) obj;
+        Employee2 emp = (Employee2) obj;
         return this.name.equals(emp.getName()) && this.age == emp.getAge();
     }
 
